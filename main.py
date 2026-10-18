@@ -33,5 +33,16 @@ def screen():
     return "DO", "Passed all six gates"
 
 
-verdict, reason = screen()
-print(f"\nVerdict: {verdict}\nWhy: {reason}")
+results = []
+while True:
+    name = input("\nUse case to check (empty line to finish): ").strip()
+    if not name:
+        break
+    verdict, reason = screen()
+    results.append((name, verdict, reason))
+
+print("\n===== RESULT =====")
+if not results:
+    print("No use cases entered.")
+for name, verdict, reason in results:
+    print(f"{verdict:6} | {name:30} | {reason}")
