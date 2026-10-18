@@ -29,8 +29,8 @@ def screen():
 
 def main():
     company = input("Company name: ").strip()
-    target = input("Measurable target (e.g. cut handling time by 10%): ").strip()
-    owner = input("Named owner (a person): ").strip()
+    target = input("Target: what improves, by how much, by when? (e.g. invoice processing time from 12 to 8 minutes by 31 Dec 2026): ").strip()
+    owner = input("Owner: the ONE person at the company responsible for reaching the target (name): ").strip()
 
     if not is_ready(target, owner):
         print("\nNOT READY: agree a measurable target and a named owner with the company first.")
