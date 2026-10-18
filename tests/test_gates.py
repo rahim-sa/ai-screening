@@ -1,4 +1,4 @@
-from ai_screening.gates import PASSED, QUESTIONS, STOPS, check_gate
+from ai_screening.gates import PASSED, QUESTIONS, STOPS, check_gate, is_ready
 
 
 def test_six_gates_in_order():
@@ -49,3 +49,8 @@ def test_every_stop_uses_an_allowed_answer():
     allowed = {key: options for key, _, options in QUESTIONS}
     for key, answer in STOPS:
         assert answer in allowed[key]
+
+def test_ready_needs_target_and_owner():
+    assert is_ready("cut time 10%", "Anna") is True
+    assert is_ready("", "Anna") is False
+    assert is_ready("cut time 10%", "  ") is False

@@ -28,3 +28,11 @@ PASSED = ("DO", "Passed all six gates")
 def check_gate(key, answer):
     """Return (verdict, reason) if this answer stops the screening, else None."""
     return STOPS.get((key, answer))
+
+MIN_USE_CASES = 3
+MAX_USE_CASES = 8
+
+
+def is_ready(target, owner):
+    """The company is ready only with a measurable target and a named owner."""
+    return bool(target.strip()) and bool(owner.strip())
