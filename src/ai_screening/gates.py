@@ -11,7 +11,7 @@ QUESTIONS = [
 ]
 
 # Answers that stop the screening: (gate key, answer) -> (verdict, reason)
-#STOPS = {
+STOPS = {
     ("fix", "y"): ("NO_AI", "A simpler fix exists"),
     ("fix", "u"): ("LATER", "Simple fix unknown: ask the person who does the work, and IT"),
     ("data", "n"): ("LATER", "Data not ready: ask IT what exists and fix its quality"),
