@@ -54,3 +54,8 @@ def test_ready_needs_target_and_owner():
     assert is_ready("cut time 10%", "Anna") is True
     assert is_ready("", "Anna") is False
     assert is_ready("cut time 10%", "  ") is False
+
+def test_unknown_answer_always_means_later():
+    for key, _, options in QUESTIONS:
+        if "u" in options:
+            assert check_gate(key, "u")[0] == "LATER"
