@@ -14,6 +14,7 @@ from ai_screening.library import (
     prescription,
     use_cases_for,
 )
+from ai_screening.storage import build_assessment, save_assessment
 
 
 def ask(question, answers):
@@ -93,3 +94,6 @@ def main():
         for label, value in prescription(row):
             print(f"  {label}: {value}")
         print("  Next: design a 6-12 week pilot with a baseline and a success number")
+
+    path = save_assessment(build_assessment(company, industry, target, owner, results))
+    print(f"\nSaved: {path}")
