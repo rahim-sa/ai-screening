@@ -7,6 +7,12 @@ from ai_screening.gates import (
     check_gate,
     is_ready,
 )
+from ai_screening.library import (
+    list_industries,
+    load_use_cases,
+    parse_numbers,
+    use_cases_for,
+)
 
 
 def ask(question, options):
@@ -16,6 +22,15 @@ def ask(question, options):
         if answer in options:
             return answer
         print("Please answer with one of:", options)
+
+
+def pick(prompt, count):
+    """Ask for numbers like 1,4,7 until valid. Returns 0-based indexes."""
+    while True:
+        indexes = parse_numbers(input(prompt), count)
+        if indexes is not None:
+            return indexes
+        print(f"Enter numbers from 1 to {count}, separated by commas, no repeats.")
 
 
 def screen():
@@ -36,18 +51,32 @@ def main():
         print("\nNOT READY: agree a measurable target and a named owner with the company first.")
         return
 
+    rows = load_use_cases()
+    industries = list_industries(rows)
+    print("\nIndustries:")
+    for number, name in enumerate(industries, 1):
+        print(f"  {number:2}. {name}")
+    industry = industries[pick("Industry number: ", len(industries))[0]]
+
+    options = use_cases_for(rows, industry)
+    print(f"\nUse cases for {industry} (plus cross-industry):")
+    for number, row in enumerate(options, 1):
+        print(f"  {number:2}. [{row['Department']}] {row['Specific use case']}")
+    chosen = [options[i] for i in pick(
+        f"Choose {MIN_USE_CASES} to {MAX_USE_CASES} (e.g. 1,4,7): ", len(options))]
+
+    if not MIN_USE_CASES <= len(chosen) <= MAX_USE_CASES:
+        print(f"\nNote: you chose {len(chosen)} use cases. The method suggests {MIN_USE_CASES} to {MAX_USE_CASES}.")
+
     results = []
-    while len(results) < MAX_USE_CASES:
-        name = input(f"\nUse case {len(results) + 1} (name, or Enter to finish): ").strip()
-        if not name:
-            break
+    for row in chosen:
+        print(f"\n--- {row['Specific use case']} ({row['Department']}) ---")
+        print(f"Signs you should have heard: {row['How to recognize it (signals in the interview)']}")
+        print(f"Not suitable when: {row['When NOT to prescribe']}")
         verdict, reason = screen()
-        results.append((name, verdict, reason))
+        results.append((row["Specific use case"], verdict, reason))
 
-    if len(results) < MIN_USE_CASES:
-        print(f"\nNote: you checked {len(results)} use cases. The method suggests {MIN_USE_CASES} to {MAX_USE_CASES}.")
-
-    print(f"\n===== RESULT for {company} =====")
+    print(f"\n===== RESULT for {company} ({industry}) =====")
     print(f"Target: {target} | Owner: {owner}\n")
     for name, verdict, reason in results:
-        print(f"{verdict:6} | {name:30} | {reason}")
+        print(f"{verdict:6} | {name:45} | {reason}")
