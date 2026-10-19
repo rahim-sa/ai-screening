@@ -2,6 +2,7 @@ from ai_screening.library import (
     list_industries,
     load_use_cases,
     parse_numbers,
+    prescription,
     use_cases_for,
 )
 
@@ -28,3 +29,10 @@ def test_parse_numbers():
     assert parse_numbers("a", 10) is None
     assert parse_numbers("", 10) is None
     assert parse_numbers("2,2", 10) is None
+
+def test_prescription_has_form_metric_and_risk():
+    row = load_use_cases()[0]
+    labels = [label for label, _ in prescription(row)]
+    assert labels == ["Form to prescribe", "Example tools (check current)",
+                      "Metric to baseline first", "Main risk and mitigation"]
+    assert all(value for _, value in prescription(row))

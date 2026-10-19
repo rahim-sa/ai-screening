@@ -37,3 +37,12 @@ def parse_numbers(text, count):
     if any(n < 1 or n > count for n in numbers):
         return None
     return [n - 1 for n in numbers]
+
+def prescription(row):
+    """The advice for a DO result, taken from the Excel row: (label, value) pairs."""
+    return [
+        ("Form to prescribe", row["Form to prescribe"]),
+        ("Example tools (check current)", row["Example tools (check current)"]),
+        ("Metric to baseline first", row["Metric to baseline first"]),
+        ("Main risk and mitigation", row["Main risk and mitigation"]),
+    ]
