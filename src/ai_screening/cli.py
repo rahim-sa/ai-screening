@@ -11,6 +11,7 @@ from ai_screening.library import (
     list_industries,
     load_use_cases,
     parse_numbers,
+    prescription,
     use_cases_for,
 )
 
@@ -77,9 +78,18 @@ def main():
         print(f"Signs you should have heard: {row['How to recognize it (signals in the interview)']}")
         print(f"Not suitable when: {row['When NOT to prescribe']}")
         verdict, reason = screen()
-        results.append((row["Specific use case"], verdict, reason))
+        results.append((row, verdict, reason))
 
     print(f"\n===== RESULT for {company} ({industry}) =====")
     print(f"Target: {target} | Owner: {owner}\n")
-    for name, verdict, reason in results:
-        print(f"{verdict:6} | {name:45} | {reason}")
+    for row, verdict, reason in results:
+        print(f"{verdict:6} | {row['Specific use case']:45} | {reason}")
+
+    do_results = [row for row, verdict, _ in results if verdict == "DO"]
+    if do_results:
+        print("\n===== WHAT TO PRESCRIBE (cheapest option first) =====")
+    for row in do_results:
+        print(f"\n{row['Specific use case']}")
+        for label, value in prescription(row):
+            print(f"  {label}: {value}")
+        print("  Next: design a 6-12 week pilot with a baseline and a success number")
