@@ -15,13 +15,16 @@ from ai_screening.library import (
 )
 
 
-def ask(question, options):
-    """Ask until the answer is one of the allowed options."""
+def ask(question, answers):
+    """Show the question and what each answer means. Ask until the answer is valid."""
+    print(question)
+    for key, meaning in answers.items():
+        print(f"   {key} = {meaning}")
     while True:
-        answer = input(f"{question} {options}: ").strip().lower()
-        if answer in options:
+        answer = input("   Your answer: ").strip().lower()
+        if answer in answers:
             return answer
-        print("Please answer with one of:", options)
+        print("   Please answer with one of:", ", ".join(answers))
 
 
 def pick(prompt, count):
@@ -35,8 +38,8 @@ def pick(prompt, count):
 
 def screen():
     """Ask the gates in order. The first gate that fails decides the verdict."""
-    for key, text, options in QUESTIONS:
-        stop = check_gate(key, ask(text, options))
+    for key, text, answers in QUESTIONS:
+        stop = check_gate(key, ask(text, answers))
         if stop:
             return stop
     return PASSED
