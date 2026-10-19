@@ -2,12 +2,18 @@
 
 # (key, question text, allowed answers), in the order they are checked
 QUESTIONS = [
-    ("fix", "1. Ask: could a rule, a process change or a feature of software they already own solve this? (e.g. invoices already arrive in a format their accounting software can import). y = yes, a simple fix exists, n = no, u = they don't know", ["y", "n", "u"]),
-    ("data", "2. Ask: does the data/text/documents for this exist in digital form, in one place, and is it mostly correct? y = yes, n = no, u = they don't know", ["y", "n", "u"]),
-    ("cost", "3. Ask: how many hours or how much money per year does this task cost, and is that number known? y = known and big enough for a project, s = known but small, u = not known", ["y", "s", "u"]),
-    ("check", "4. Ask: if the AI gets one output wrong, is the damage small, OR will a person check every output before it is used? y = yes (either one), n = no (big damage and nobody checks), u = they don't know", ["y", "n", "u"]),
-    ("blocker", "5. Ask: does a law, contract or safety rule forbid this, with no way around it? (e.g. customer data must not leave the company). y = blocker exists, n = none, u = they don't know", ["y", "n", "u"]),
-    ("owner", "6. Ask: is ONE named person responsible for this use case, AND do the future users want it? y = both, n = not both, u = they don't know", ["y", "n", "u"]),
+    ("fix", "1. Is there a simple fix that does not need AI? A rule, a process change, or a feature of software they already own (e.g. invoices already arrive in a format their accounting software can import).",
+     {"y": "yes, a simple fix exists", "n": "no, nothing simple would work", "u": "don't know yet"}),
+    ("data", "2. Does the data this needs (text, documents, records) exist in digital form, in one place, and is it mostly correct?",
+     {"y": "yes, all three", "n": "no, at least one is missing", "u": "don't know yet"}),
+    ("cost", "3. Do they know what this task costs per year (hours x hourly cost, or money lost)?",
+     {"y": "known, and clearly more than a pilot would cost", "s": "known, but small", "u": "not known"}),
+    ("check", "4. If the AI gets an output wrong, is the damage small, or will a person check every output before it is used?",
+     {"y": "yes, at least one of the two is true", "n": "no, the damage would be big and nobody checks", "u": "don't know yet"}),
+    ("blocker", "5. Does a law, contract or safety rule forbid this, with no way around it? (e.g. customer data must not leave the company)",
+     {"y": "yes, forbidden, no way around", "n": "no, nothing forbids it, or there is a workaround", "u": "don't know yet"}),
+    ("owner", "6. Is ONE named person responsible for this use case, and do the future users want it?",
+     {"y": "yes, both", "n": "no, the person or the users are missing", "u": "don't know yet"}),
 ]
 
 # Answers that stop the screening: (gate key, answer) -> (verdict, reason)
